@@ -22,7 +22,7 @@ const HomeCarousel = () => {
       onSelect={handleSelect}
       className="carousel-home"
     >
-      <Carousel.Item className="homecarousel-item">
+      <Carousel.Item className="homecarousel-item" interval={4000}>
         <img
           className="d-block w-100 slide-img img-fuild"
           src={home1980}
@@ -44,7 +44,7 @@ const HomeCarousel = () => {
           </Button>
         </Carousel.Caption>
       </Carousel.Item>
-      <Carousel.Item className="homecarousel-item">
+      <Carousel.Item className="homecarousel-item" interval={4000}>
         <img
           className="d-block w-100 slide-img img-fluid"
           src={homebc}
@@ -66,7 +66,7 @@ const HomeCarousel = () => {
           </Button>
         </Carousel.Caption>
       </Carousel.Item>
-      <Carousel.Item className="homecarousel-item">
+      <Carousel.Item className="homecarousel-item" interval={4000}>
         <img
           className="d-block w-100 slide-img img-fluid"
           src={homebb}
