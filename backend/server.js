@@ -1,10 +1,16 @@
+require("dotenv").config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
 const app = express();
+const intouch = require('./api/intouch');
+const registration = require('./api/registration');
+const corporate = require('./api/corporate');
+
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.json({ extended: false }));
 
 //backend server port
 const port = 5000;
@@ -13,11 +19,12 @@ const port = 5000;
 mongoose.set('strictQuery', false);
 
 // Connect to the MongoDB database
-mongoose.connect('mongodb+srv://mongo:mongo@clusterheng.uam6uok.mongodb.net/UpskillToday',
-//mongoose.connect(url, 
+//mongoose.connect('mongodb+srv://mongo:mongo@clusterheng.uam6uok.mongodb.net/UpskillToday',
+mongoose.connect(process.env.MONGO_DATA_API_URL, 
   {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
+  useCreateIndex: true,
 });
 
 const connection = mongoose.connection;
@@ -79,7 +86,7 @@ app.get("/", function(req, res){
 app.use(cors());
 app.use(bodyParser.json());
 
-
+app.use("/api/registration", registration);
 // POST request handler for the API endpoint
 app.post('/api/registration', (req, res) => {
 
@@ -101,6 +108,7 @@ app.post('/api/registration', (req, res) => {
     });
 });
 
+app.use("/api/intouch", intouch);
 // POST request handler for the API endpoint
 app.post('/api/intouch', (req, res) => {
 
@@ -122,7 +130,7 @@ app.post('/api/intouch', (req, res) => {
       });
   });
 
-
+  app.use("/api/corporate", corporate);
   app.post('/api/corporate', (req, res) => {
 
     // Create a new intouchData object with the request body data
@@ -141,6 +149,10 @@ app.post('/api/intouch', (req, res) => {
           res.send('Error saving form data to the database');
         });
     });
+
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
+
+//Export the Express API
+module.exports = app;
